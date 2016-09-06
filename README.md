@@ -1,0 +1,3 @@
+# activae 
+Activae is a web Digital Asset Management System. It's open source and was developed originally by CENATIC, the Spanish National Open Source Center. The project was discontinued by CENATIC, but github user manolodd recovered the source code to give it a second opportunity. I'm not the main developer of this project but I'll act as a champion for it, translate documentation to English, and maintain it temporarily until somebody can join/replace me. Activae supports live format transcoding, workflow, multiple users with different roles and ALCs; It uses standard metadata. Also, it can be use as a video hosting platform to playback online videos, sounds and images.
+Cheers!
