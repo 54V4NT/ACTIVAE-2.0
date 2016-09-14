@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>ACTIVAE 2.0 by 54V4NT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">ACTIVAE 2.0</h1>
+      <h2 class="project-tagline">ACTIVAE 2.0 is an open source web Media Asset Management System, written in Python.</h2>
+      <a href="https://github.com/54V4NT/ACTIVAE-2.0" class="btn">View on GitHub</a>
+      <a href="https://github.com/54V4NT/ACTIVAE-2.0/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/54V4NT/ACTIVAE-2.0/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="activae-20-free-and-open-source-media-management" class="anchor" href="#activae-20-free-and-open-source-media-management" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ACTIVAE 2.0: Free and Open Source media management</h1>
+
+<p><img src="https://s9.postimg.org/hs6whydaj/activae_new_logo.png" alt="ACTIVAE logo"></p>
+
+<p>ACTIVAE 2.0 is a web Media Asset Management System. It's open source and was developed originally by CENATIC, the Spanish National Open Source Center. The project was discontinued by CENATIC, but <a href="https://github.com/manolodd">a really nice guy</a> recovered the source code to give it a second opportunity. I'm managing development of this project, translating the documentation to English, and maintaining it temporarily until somebody can join/replace me. ACTIVAE 2.0 supports live format transcoding, workflow, multiple users with different roles and ALCs; It uses standard metadata. Also, it can be use as a video hosting platform to playback online videos, sounds and images.  </p>
+
+<h2>
+<a id="why-even-bother-with-media-management-isnt-it-free-with-cloud-storage" class="anchor" href="#why-even-bother-with-media-management-isnt-it-free-with-cloud-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why even bother with media management, isn't it free with cloud storage?</h2>
+
+<p><strong>Actually no.</strong> As more businesses, organizations, and institutions of all kinds generate more media that becomes part of their value chain, their know-how and production processes, the major commercial cloud storage services [Google Drive, Dropbox, etc.] seem to have become less capable of cataloguing and retrieving complex, essential metadata.  </p>
+
+<p>To us intelligent media management means the system sees data not just as a single media file (audio, video, or image) with fixed metadata, but as the combination of that file, its metadata, and all necessary sidecar data [i.e.; closed captioning files, album art, etc]- and the ability to edit all of them.  </p>
+
+<p>This allows for the entire organization to analyze, document, and most importantly, manipulate (read: make important changes to) data in large batches, quickly. In other words, don't scroll, click, and drag one or two files at a time when you can search, sort, and filter in large meaningful groups.  </p>
+
+<h2>
+<a id="about-activae-20" class="anchor" href="#about-activae-20" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About ACTIVAE 2.0</h2>
+
+<p>Most organizations feel the need for platforms that allow the complex management of multimedia assets. There are several platforms that can do that: Canto Cumulus, Artesia DAM, Fuzion Media Asset Management, Nuexeo DAM, and others.<br>
+However, the number of simple and scalable platforms based on open source software is sorely lacking and that is why CENATIC developed the original Activae platform for multimedia asset management: it was highly scalable, open source, vendor-independent, fully developed in Python, and designed for the Ubuntu Server.  </p>
+
+<p>The active development fork, ACTIVAE 2.0, is now being developed independently, exclusively in English, and with a massive UI overhaul.  </p>
+
+<p>Why the renaming/rebranding? Seriously, why not? This project was close to biting the dust. The least we can do is give it a little bit of a face-lift.  </p>
+
+<h2>
+<a id="distinguishing-features" class="anchor" href="#distinguishing-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Distinguishing features:</h2>
+
+<ul>
+<li>
+<strong>Scalability:</strong> ACTIVAE 2.0 consists of four modules: transcoding, data access, web frontend, and an API exported via XML/RPC. Each one of them allows load balancing and high availability, so the scalability possibilities are broad:</li>
+<li>It can all run on one machine or additional machines can be arranged as required.</li>
+<li>If the use of the platform requires more storage, you can easily hot-plug it.</li>
+<li>If you do a lot of transcoding of multimedia formats, machines can be dedicated specifically for these jobs and even more can be added as you see the need.</li>
+<li>
+<strong>Load balancing:</strong> is provided by the internal engine of the platform, the Cherokee web server [5]. Access to the application can be configured in this way to provide service in those cases where visitors to the platform are abundant.</li>
+<li>
+<strong>Transcoding:</strong> ACTIVAE 2.0 allows advanced format transcoding in the platform itself- including a roadmap for popular film/video production formats, such as DNxHD &amp; CineForm. If a production format video is added (like DNxHD, CineForm, or ProRes), it can be rendered quickly and quietly into an H.264 MP4 or WebM video for publishing on the internet. You can even convert a video to an MP3; ACTIVAE 2.0 will automatically strip the video layer and extract the audio. It supports transcoding between 200 different formats/containers, and most importantly, the transcoding is done asynchronously - decoupled and detached (in the background) while you can continue working with ACTIVAE 2.0. It is a non-blocking process... think about all the media production time you'll get back when your workstation stops holding you back during render times!</li>
+<li>
+<strong>100% AJAX GUI:</strong> provided by the CTK library <a href="http://svn.cherokee-project.com/browser/CTK"> <em>Cherokee Tool Kit</em> </a>, a jQuery wrapper written in Python that allows the development of advanced, light and professional user interfaces.</li>
+<li>
+<strong>Pythonicness:</strong> The platform is fully developed in Python 2.5, familiar to many readers: the API that is exported via XML/RPC, the AJAX user interface, the control and business logic, the database access, etc.</li>
+<li>
+<strong>It is open source:</strong> ACTIVAE 2.0 is licensed under the New BSD License terms. This allows modification, use, distribution, sale, or relicensing, which is an advantage to any individual, company, or organization that wishes to use their properties for personal use or to provide services to third parties, expanding its portfolio of products and services and ultimately expanding their business opportunities.</li>
+<li>
+<strong>It is maintained <em>by</em> media production professionals <em>for</em> media production professionals:</strong> As new codecs and media formats become available, you can bet that the open source implementations will be included in ACTIVAE 2.0!</li>
+</ul>
+
+<p>The technical soundness of the platform is ensured by being based on stable and very capable open source components: Xapian, Cherokee, Python, ImageMagick, FFMpeg, etc. Here are the modules used by ACTIVAE 2.0, how they are interconnected, and how each is used:
+<img src="https://s9.postimg.io/4zisi11ov/activae_20_arch.png" alt="ACTIVAE 2.0 architecture">
+Cool, right?!</p>
+
+<h2>
+<a id="how-to-help" class="anchor" href="#how-to-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to help</h2>
+
+<p>The active fork of the project is currently hosted on GitHub: <a href="https://github.com/54V4NT/ACTIVAE-2.0">https://github.com/54V4NT/ACTIVAE-2.0</a></p>
+
+<p>All necessary information for participation can be found in the <a href="https://github.com/54V4NT/ACTIVAE-2.0/wiki">project Wiki</a>. The <em>internal</em> documentation of the source code as well as the comments for each commit are completely written in English. Although the documentation and UI are currently available only in Spanish, I am working hard to get the English version up as soon as possible.</p>
+
+<p>Cheers.<br>
+-<em>54V4NT</em> </p>
+
+<h3>
+<a id="reviews" class="anchor" href="#reviews" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>REVIEWS</h3>
+
+<p><a href="http://www.opensourcedigitalassetmanagement.org/reviews/available-open-source-dam/#pwd">Open Source Digital Asset Management 2014 roundup</a></p>
+
+<blockquote>
+<p>Activae uses the Cherokee Web Server and includes an advanced API so is well suited for integration (but XML/RPC rather than the more conventional REST or CMIS gateways).  It includes a separate transcoding server detached from the web application which permits it to scale quite easily.  This is more common in enterprise DAM systems but less so in open source products...</p>
+</blockquote>
+
+<h3>
+<a id="related-tools-and-reference" class="anchor" href="#related-tools-and-reference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Related tools and reference</h3>
+
+<p><a href="https://www.python.org/">Python</a><br>
+<a href="https://ffmpeg.org/">FFMPEG</a><br>
+<a href="www.imagemagick.org">ImageMagick</a><br>
+<a href="http://www.cherokee-project.com">Cherokee Project</a><br>
+<a href="http://svn.cherokee-project.com/browser/CTK">Cherokee Tool Kit</a></p>
+
+<h3>
+<a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgements:</h3>
+
+<p>Some really great thinkers were previously involved in development, and we want to acknowledge their effor.<br>
+Since this project is a 'rescue', these contributors are now nameless except for a few silly comments hidden deep within the various modules of ACTIVAE 2.0, and dead links to old companies, which we have listed in the footer- even though they lead to dark places, from which neither man nor woman may ever escape...<br>
+<a href="http://www.octality.com">Octality</a><br>
+<a href="http://www.es.atosorigin.com/es-es/">Atos Origin</a>  </p>
+
+<p>About Activae's original development sponsor: CENATIC</p>
+
+<p>CENATIC is the Spanish National Competence Center for the Application of Open source Technologies. It is a public foundation, promoted by the Ministry of Industry, Tourism, and Commerce of the Spanish Government (through the Secretary of State for Telecommunications and Information Society and the public entity red.es) and the Extremadura Regional Government. Members of the Board are also the Regional Governments of Andalusia, Asturias, Aragon, Cantabria, Catalonia, the Balearic Islands, and the Basque Country, as well as the Atos Origin, Telefonica and GPEX companies.</p>
+
+<p>CENATIC's mission is to promote knowledge and use of open source software in all areas of society, with special attention to government, businesses, the ICT sector - providers or users of open source technologies - and development communities. In addition, the established Spanish regulatory framework corresponds to CENATIC general advice on legal issues, technology, and methodology most appropriate for the release of software and knowledge.
+<a href="http://www.cenatic.es">http://www.cenatic.es</a><br>
+<a href="http://activae.cenatic.es">http://activae.cenatic.es</a>  </p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/54V4NT/ACTIVAE-2.0">ACTIVAE 2.0</a> is maintained by <a href="https://github.com/54V4NT">54V4NT</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
