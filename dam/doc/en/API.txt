@@ -1,0 +1,107 @@
+# Copyright (C) 2010 CENATIC: National Reference Center
+# Application of ICT-based Open Source, Spain.
+#
+# You may contact the copyright holder at: Fundacion CENATIC, Edificio
+# de Servicios Sociales: C/ Vistahermosa, 1, 3ra planta, 06200
+# Almendralejo (Badajoz), Spain
+#
+# This documentation is licensed under CC-By
+
+XML-RPC:
+
+The XML-RPC server is launched by default parameters specified
+in config.py . Accepts the following parameters:
+
+  --help                  Print this message
+
+ Server:
+  --worker=<IP>           Launch a worker (RPC server)
+
+ Client:
+  --ping                  Ping the server
+
+ Parameters:
+  --listen=<IP>           Bind RCP server to IP
+  --port=<INT>            Use a custom port for the RCP server
+  --server=<IP>           Connect to a custom server
+  --path=<RPC_PATH>       Path to which the rpc_server is restricted
+
+
+API methods:
+* search:
+  Input: text | dictionary search
+
+  Output: 	[Asset_id | ...]
+
+  Exceptions:
+	Empty: empty search
+	Invalid: incorrect fields in the dictionary.
+
+  Notes:
+
+  Searching with plain text strings compares the following fields: 'publisher_name', 'creator_name',
+  'collection_name', 'title', 'subject', 'description'. It's important
+  to note that they are only indexed words of 4 or more characters, due
+  to a defect in MySQL (this is configurable at the BBDD level). If there are
+  boolean modifiers present in the search string (+,-,~, etc), the API handles
+  making the search with these restrictions.
+
+  For searches made using a search dictionary, the valid
+  dictionary fields are: 'publisher_name',
+  'creator_name', 'collections_name', 'title', 'subject',
+  'description', 'type', 'asset_types_id', 'licenses_id',
+  'collections_id', 'formats_id', 'creator_id', 'publisher_id',
+  'published_flag', 'edited_flag', 'language', 'id','version',
+  'filename', 'transcoding_flag', 'extent','views','date_modified',
+  'date_created', 'date_available', 'version', 'size',
+  'bitrate','width','height'.
+
+  The special field "__order__", if it exists, will be the parameter used
+  by the modifier "ORDER BY" of SQL (ex: __order__='views DESC')
+
+  The search is carried out intelligently. That is to say:
+
+  1) Identical fields are searched (=) for: 'asset_types_id',
+  'licenses_id', 'collections_id', 'formats_id', 'creator_id',
+  'publisher_id', 'published_flag', 'edited_flag', 'language',
+  'id','version', 'filename', 'transcoding_flag',
+  'extent','views','date_modified', 'date_created', 'date_available',
+  'version', 'size', 'bitrate','width','height'
+
+  2) Similar fields are searched (LIKE) for: 'publisher_name',
+  'creator_name', 'collections_name', 'title', 'subject',
+  'description', 'type'
+
+  3) Additionally, if range limits are specified by adding
+  '-' y '+' for the bottom and topmost limit, respectively, searches
+  are made by interval of the following fields:
+  'extent','views','date_modified', 'date_created', 'date_available',
+  'version', 'size', 'bitrate','width','height'.
+  That is to say, a dictionary like {'version-': 1, 'version+': 10}
+  restricts searching files whose version belongs to the [1-10] range.
+
+* info:
+  Input:	none
+  Output:	{ 'name': project_name,
+  		  'version': version_number }
+  Exceptions: none
+
+* ping:
+  Input:	none
+  Output:	'pong'
+  Exceptions:	none
+
+* get:
+  Input:	Asset_id
+  		strict = True|False
+  Output:	List of tuples DCIM | DCIM metadata library.
+  Exceptions:
+	Empty:		empty request
+	Invalid:	invalid asset
+	Unauthorized:	no access to assets is permitted.
+
+  Notes: The DCIM fields must contain a unique description, although
+  there may be multiple fields with the same name to symbolize multiple relationships.
+  When the 'strict' flag doesn't pop up (or pops up as True), a list
+  of tuples (DCIM key, DCIM content) is returned. When stric==False, a dictionary is returned
+  whose multiple fields are coded as lists.

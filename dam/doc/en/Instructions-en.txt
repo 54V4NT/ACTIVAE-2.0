@@ -1,0 +1,185 @@
+Minimum performance requirements
+===============================
+
+Machine with a minimal install of Ubuntu 10.04 32-bit [1],
+1GB of RAM, 8GB of available storage. At the minimum installation (covered in this document),
+This machine will be used for all services: ACTIVAE 2.0, transcoding queue
+and search API.
+
+1: http://ubuntu.grn.cat/ubuntu-releases/lucid/ubuntu-10.04-server-i386.iso
+
+After installing the base system, the following packages must also be installed.
+
+# apt-get install gcc g++ subversion patch wget libxml2-dev mysql-server rrdtool libmysqlclient-dev libjpeg62-dev zlib1g-dev autoconf unzip python-pycurl pkg-config gettext
+
+IMPORTANT:       ACTIVAE 2.0 is extremely flexible and scalable. Its performance is optimal when all
+                  It is deploying services running on different machines, in high
+                  availability and load balancing. This document specifies simple installation,
+                  configuration and implementation of the platform on just one
+                  server. For more complex configurations, consult the administrator's manual
+                  in the /doc folder.
+
+List of ports: explanation
+===============================
+
+Activate deploys services in various ports. They are specified below:
+
+Port	     Descripción
+------------------------------------------------------------------------
+80	       Frontend: main balancer for all the different web servers.
+9091	     Web: port through which the main interface is accesible, throughout the machine running ACTIVAE 2.0 server. These are the ports and machines balanced by the Frontend.
+8000	     CTK: Port used by the platform for asynchronous data transmission.
+8001	     Balancer for the transcoding queue, which is a XMLRPC service. The IP and port of the service is set by the constant QUEUE_SERVER and QUEUE_PORT.
+8002	     Port on which each machine exports the search API using XMLRPC. The constant is LOOKUP_PORT.
+8003	     Port on which each machine exports its transcoding queue via XMLRPC. The constant is PORT.
+33060	     DBSlayer: Asynchronous MySQL balancing. The parameter is DB_HOST.
+
+
+Therefore, to successfully execute the platform must
+have access to these ports. Parameters can be amended
+in config.py, in which case it will be necessary to reconfigure the
+relevant balancers by editing these files:
+
+  frontend/cherokee.conf.orig
+  src/queue/cherokee.conf
+  dabase/cherokee.conf
+
+
+Architecture once deployed the platform
+=============================================
+
+                  -->  Back-end 1  -----
+                 |     [Port 9091]      |
+                 |                      |                    -> MySQL 1
+Front-end -------|-->  Back-end 2  -----|-->   DBSlayer  ---|
+[Port 80]        |     [Server2: 9091]  |    [Port 33060]    -> MySQL 2
+                 |                      |
+                  -->  Back-end 3  -----
+                       [Server3: 9091]
+
+
+                  -->  Transcode-engine 1
+                 |     [Port 8003]
+                 |
+Queue-balancer --|-->  Transcode-engine 2
+[Port 8001]      |     [Port 8003]
+                 |
+                  -->  Transcode-engine 3
+                       [Port 8003]
+
+Basic installation
+==================
+
+1) create user and group 'activae'
+
+# useradd activae
+
+2) Unzip or download the source.
+
+In our example, we installed everything in opt/activae-inst (either
+if the code is cloned directly from the github repo, or
+
+# cd /opt
+# git clone https://github.com/54V4NT/ACTIVAE-2.0.git
+# git checkout dam-stable-branch
+
+unzipping the package & copying files there from GitHub (https://github.com/54V4NT/ACTIVAE-2.0/tarball/master):
+
+# cd /opt
+# tar xzfv /directory/that/contains/activae.tar.gz
+
+if performed by decompressing the source of a package that has been previously downloaded.
+
+Then all the necessary files to install are stored in /opt/activae-inst.
+
+3) Configure routes (not recommended).
+
+You may configure the installation route/directory by altering
+/opt/activae-inst/deployment/config.py
+
+Optionally you can customize other routes
+/opt/activae-inst/src/config.py
+, but it's not necessary.
+
+The installer automatically detects and downloads the dependencies
+not in your downloaded package.
+
+The default installer uses the specified routes in
+activae-inst/deployment/config.py, so if you want to specify the
+destination files simply edit this file. By default
+downloads will be held in /opt/activae_src, and the installation in
+/opt/activae.
+
+4) Begin installation
+
+To launch the installer, simply run the following:
+
+# cd /opt/activae-inst/deployment
+# sudo make install
+
+The installer will ask to create the necessary directories and files,
+with all necessary permissions, if needed.
+
+Database
+=============
+The database creation and assignment of permissions would
+take place like so:
+
+# mysql -uroot -hlocalhost -p
+[...]
+mysql>	CREATE DATABASE activae;
+	GRANT ALL PRIVILEGES ON activae.* TO activae@localhost IDENTIFIED BY 'activae';
+	GRANT ALL PRIVILEGES ON activae.* TO activae@localhost.localdomain IDENTIFIED BY 'activae';
+	FLUSH PRIVILEGES;
+	quit;
+
+# cd /opt/activae-inst/database
+# mysql -uroot -hlocalhost -p activae < activae.sql
+
+Both commands will request the root user password for the MySQL server. Go to the MySQL manual for more information.
+
+This completes installation of the platform.
+
+Autostart settings and configuration
+=====================================
+
+First copy the startup scripts accompanying the platform,
+in a suitable place:
+
+# sudo cp /opt/activae/init.d/* /etc/init.d
+
+Then configure the scripts for each run level.
+For the default values use:
+
+# sudo update-rc.d activae defaults
+
+Executing the platform
+==========================
+
+Given that, as specified at the beginning of this document
+We are talking about a basic installation on a single server,
+to run the application you will simply have to type:
+
+$ sudo /etc/init.d/activae start
+
+And this spins up the ACTIVAE 2.0 services automatically:
+
+- Web Balancer.
+- Database Balancer.
+- Transcoders.
+- Export API.
+
+Additionally, the system is ready to automatically spin these services back up
+during eventual OS restarts.
+
+NOTA: ACTIVAE 2.0 spins up it's own web server on port 80. This means
+       if there is already another Web server using that port (eg Apache),
+       the application will fail to start.
+
+To access ACTIVAE 2.0
+================
+
+http://localhost
+
+Default User: admin
+Default password: admin
